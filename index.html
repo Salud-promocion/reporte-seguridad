@@ -5,55 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Reporte de Seguridad del Paciente</title>
     <style>
-        :root { --primary: #2c3e50; --secondary: #3498db; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 15px; color: #333; margin: 0; }
-        .container { max-width: 550px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary); text-align: center; font-size: 1.4rem; margin-bottom: 5px; }
-        .intro { text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        h2 { font-size: 0.95rem; color: var(--secondary); margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9rem; }
+        :root { 
+            --primary: #0056b3; 
+            --secondary: #00a8cc; 
+            --accent: #27ae60; 
+            --bg: #ebf2f7; 
+            --text: #2c3e50;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: var(--bg); 
+            padding: 10px; 
+            color: var(--text); 
+            margin: 0; 
+        }
+
+        .container { 
+            max-width: 650px; 
+            margin: 20px auto; 
+            background: white; 
+            padding: 0; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            overflow: hidden; 
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .header-banner h1 { margin: 0; font-size: 1.6rem; text-transform: uppercase; letter-spacing: 1px; }
+        .header-banner p { margin: 10px 0 0; font-size: 0.9rem; opacity: 0.9; line-height: 1.4; }
+
+        section { 
+            padding: 30px 25px;
+            border-bottom: 8px solid var(--bg); 
+        }
+
+        section:last-of-type { border-bottom: none; }
+
+        h2 { 
+            font-size: 1.1rem; 
+            color: var(--primary); 
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--secondary);
+            padding-left: 10px;
+        }
+
+        label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 0.95rem; color: #444; }
+        
         input[type="text"], input[type="date"], input[type="time"], select, textarea { 
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem;
+            width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 12px; 
+            font-size: 1rem; transition: all 0.3s; background: #fafafa; box-sizing: border-box;
         }
-        textarea { min-height: 100px; resize: vertical; }
-        .radio-group { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
-        .item { display: flex; align-items: center; gap: 10px; cursor: pointer; background: #f9f9f9; padding: 10px; border-radius: 6px; }
-        .item:hover { background: #f0f7ff; }
-        input[type="radio"], input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
+
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--secondary); outline: none; background: white; box-shadow: 0 0 8px rgba(0,168,204,0.2);
+        }
+
+        .radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        
+        /* Ajuste para móviles: una sola columna si la pantalla es pequeña */
+        @media (max-width: 480px) { .radio-grid { grid-template-columns: 1fr; } }
+
+        .item-card { 
+            display: flex; align-items: center; gap: 10px; cursor: pointer; 
+            background: white; border: 2px solid #eee; padding: 12px; border-radius: 12px; 
+            transition: 0.2s; font-size: 0.9rem;
+        }
+
+        .item-card:hover { border-color: var(--secondary); background: #f0faff; }
+
+        input[type="radio"], input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; margin: 0; }
+
         .btn-submit { 
-            width: 100%; padding: 16px; background: #27ae60; color: white; border: none; border-radius: 8px; 
-            font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 30px; transition: 0.3s;
+            width: calc(100% - 50px); margin: 10px 25px 40px 25px; padding: 20px; 
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            color: white; border: none; border-radius: 15px; 
+            font-weight: bold; cursor: pointer; font-size: 1.2rem; 
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3); transition: 0.3s;
         }
-        .btn-submit:hover { background: #219150; }
-        .other-field { display: none; margin-top: 10px; background: #fffbe6; }
+
+        .btn-submit:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4); }
+
+        .other-field { display: none; margin-top: 12px; border-left: 4px solid var(--secondary); background: #fffbe6; }
+        
+        textarea { min-height: 110px; resize: vertical; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Sistema de Reporte de Seguridad del Paciente</h1>
-    <p class="intro">Tu reporte es confidencial y ayuda a mejorar la atención y seguridad de los pacientes.</p>
+    <div class="header-banner">
+        <h1>Seguridad del Paciente</h1>
+        <p>Tu reporte es confidencial y ayuda a mejorar la atención y seguridad en nuestro centro de salud.</p>
+    </div>
 
     <form action="https://api.web3forms.com/submit" method="POST">
         
         <input type="hidden" name="access_key" value="e63fa5f7-de53-45dc-bef7-3f193f62a6c0">
-        
-        <input type="hidden" name="from_name" value="Sistema de Seguridad del Paciente">
-        <input type="hidden" name="subject" value="Nuevo Reporte de Incidente Recibido">
+        <input type="hidden" name="from_name" value="Centro de Salud - Reportes">
+        <input type="hidden" name="subject" value="Nuevo Reporte de Seguridad Recibido">
 
         <section>
-            <h2>Información del Reporte</h2>
-            <div class="form-group">
-                <label>1. Fecha del evento 📅</label>
-                <input type="date" name="fecha_evento" required>
+            <h2>Información General</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label>Fecha del evento</label>
+                    <input type="date" name="fecha_evento" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora aproximada</label>
+                    <input type="time" name="hora_evento" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>2. Hora aproximada ⏰</label>
-                <input type="time" name="hora_evento" required>
-            </div>
-            <div class="form-group">
-                <label>3. Área o servicio</label>
+            <div class="form-group" style="margin-top: 20px;">
+                <label>Área o servicio donde ocurrió</label>
                 <select name="area_servicio" onchange="checkOther(this, 'extra-area')" required>
                     <option value="">Seleccione el área...</option>
                     <option>Consulta externa</option>
@@ -70,63 +145,59 @@
 
         <section>
             <h2>Tipo de Evento</h2>
-            <div class="radio-group">
-                <label class="item"><input type="radio" name="tipo_evento" value="Evento adverso" required> Evento adverso</label>
-                <label class="item"><input type="radio" name="tipo_evento" value="Evento centinela"> Evento centinela</label>
-                <label class="item"><input type="radio" name="tipo_evento" value="Cuasifalla"> Cuasifalla</label>
+            <div class="radio-grid">
+                <label class="item-card"><input type="radio" name="tipo_evento" value="Evento adverso" required> Evento adverso</label>
+                <label class="item-card"><input type="radio" name="tipo_evento" value="Evento centinela"> Evento centinela</label>
+                <label class="item-card"><input type="radio" name="tipo_evento" value="Cuasifalla"> Cuasifalla</label>
             </div>
         </section>
 
         <section>
-            <h2>Descripción</h2>
+            <h2>Descripción del Suceso</h2>
             <div class="form-group">
-                <label>4. Describa lo sucedido 📝</label>
-                <textarea name="descripcion_hechos" required placeholder="Escriba los detalles aquí..."></textarea>
+                <label>Describa detalladamente lo sucedido 📝</label>
+                <textarea name="descripcion_hechos" required placeholder="¿Qué pasó? ¿Cómo pasó?"></textarea>
             </div>
         </section>
 
         <section>
             <h2>Personas Involucradas</h2>
-            <div class="radio-group">
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Paciente"> Paciente</label>
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Familiar"> Familiar</label>
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Personal médico"> Personal médico</label>
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Enfermería"> Enfermería</label>
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Administrativo"> Administrativo</label>
-                <label class="item"><input type="checkbox" name="involucrados[]" value="Otro" onclick="checkOtherCheck(this, 'extra-pers')"> Otro</label>
-                <input type="text" id="extra-pers" name="persona_especificada" class="other-field" placeholder="Especifique quién">
+            <div class="radio-grid">
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Paciente"> Paciente</label>
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Familiar"> Familiar</label>
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Personal médico"> Personal médico</label>
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Enfermería"> Enfermería</label>
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Administrativo"> Administrativo</label>
+                <label class="item-card"><input type="checkbox" name="involucrados[]" value="Otro" onclick="checkOtherCheck(this, 'extra-pers')"> Otro</label>
             </div>
+            <input type="text" id="extra-pers" name="persona_especificada" class="other-field" placeholder="Especifique quién">
         </section>
 
         <section>
             <h2>Consecuencias y Acciones</h2>
             <div class="form-group">
-                <label>6. ¿Hubo daño al paciente?</label>
-                <div class="radio-group">
-                    <label class="item"><input type="radio" name="hubo_dano" value="Si"> Sí</label>
-                    <label class="item"><input type="radio" name="hubo_dano" value="No"> No</label>
-                    <label class="item"><input type="radio" name="hubo_dano" value="Desconoce"> Desconoce</label>
+                <label>¿Hubo daño al paciente?</label>
+                <div class="radio-grid">
+                    <label class="item-card"><input type="radio" name="hubo_dano" value="Si"> Sí</label>
+                    <label class="item-card"><input type="radio" name="hubo_dano" value="No"> No</label>
+                    <label class="item-card"><input type="radio" name="hubo_dano" value="Desconoce"> Desconoce</label>
                 </div>
             </div>
-            <div class="form-group">
-                <label>7. Describa el daño o consecuencia (si aplica)</label>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Describa el daño o consecuencia (si aplica)</label>
                 <textarea name="descripcion_dano"></textarea>
             </div>
-            <div class="form-group">
-                <label>8. ¿Qué se hizo en el momento?</label>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Acciones realizadas en el momento</label>
                 <textarea name="acciones_tomadas"></textarea>
             </div>
         </section>
 
         <section>
-            <h2>Datos Opcionales</h2>
+            <h2>Datos del Reportante (Opcional)</h2>
             <div class="form-group">
-                <label>9. Nombre del reportante (opcional)</label>
-                <input type="text" name="nombre_opcional">
-            </div>
-            <div class="form-group">
-                <label>10. Puesto o área (opcional)</label>
-                <input type="text" name="puesto_opcional">
+                <input type="text" name="nombre_opcional" placeholder="Su nombre completo" style="margin-bottom: 15px;">
+                <input type="text" name="puesto_opcional" placeholder="Su puesto o área de trabajo">
             </div>
         </section>
 
@@ -135,11 +206,9 @@
 </div>
 
 <script>
-    // Mostrar campo de texto si seleccionan "Otro" en el Select
     function checkOther(select, targetId) {
         document.getElementById(targetId).style.display = (select.value === 'Otro') ? 'block' : 'none';
     }
-    // Mostrar campo de texto si seleccionan "Otro" en Checkbox
     function checkOtherCheck(checkbox, targetId) {
         document.getElementById(targetId).style.display = (checkbox.checked) ? 'block' : 'none';
     }
